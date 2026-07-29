@@ -1,6 +1,7 @@
 """DCK Protocol ベース Capability インターフェース"""
 from typing import Protocol, Dict, Any
-from dck.types import StateEstimate, ActionType, ResourceVector
+from dck.types import StateEstimate, ActionType
+from dck.resources import ResourceVector
 from dck.events import TransitionEvent
 
 class IObserverCapability(Protocol):
