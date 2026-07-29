@@ -27,7 +27,11 @@ dck/
 ├── decision.py        # IResourceAllocator, NormalizedPotentialEngine
 ├── utils.py           # StepTimeProvider, DeterministicIDGenerator, GapHistory
 ├── builder.py         # KernelBuilder (DI style)
-└── core.py            # DifferenceConvergenceKernel (main loop)
+├── core.py            # DifferenceConvergenceKernel (main loop)
+└── stubs.py           # テスト・デモ用スタブ (StubObserver / StubPredictor / StubExecutor)
+
+examples/
+└── basic_usage.py     # スタブを使った最小動作確認スクリプト
 ```
 
 ## Requirements
@@ -37,12 +41,12 @@ dck/
 - numpy
 - scipy
 
-## Quick Start (Builder pattern)
+## Quick Start (Builder + Stubs)
 
 ```python
 from dck import KernelBuilder, DCKConfig, ResourceVector, ReversibleResource, IrreversibleResource
+from dck.stubs import StubObserver, StubPredictor, StubExecutor
 
-# supply your own Observer / Predictor / Executor implementations
 kernel = (
     KernelBuilder(
         initial_resources=ResourceVector(
@@ -51,12 +55,18 @@ kernel = (
         )
     )
     .with_config(DCKConfig())
-    .with_capabilities(observer=..., predictor=..., executor=...)
+    .with_capabilities(
+        observer=StubObserver(),
+        predictor=StubPredictor(),
+        executor=StubExecutor(),
+    )
     .build()
 )
 
-# then: await kernel.tick(turn, raw_telemetry)
+# await kernel.tick(turn, raw_telemetry)
 ```
+
+詳細な動作確認は `python -m examples.basic_usage` を参照。
 
 ## License
 
